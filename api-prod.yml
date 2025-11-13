@@ -1,0 +1,43 @@
+server:
+  forward-headers-strategy: framework
+
+spring:
+  application:
+    name: api-server
+  profiles:
+    active: prod
+
+  elasticsearch:
+    uris: http://s4.java21.net:9200
+    username: elastic
+    password: nhnacademy123!
+    ssl:
+      verification-mode: none
+
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://s4.java21.net:13306/project_be11_team3
+    username: project_be11_team3
+    password: ${PASSWORD}
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:10351/eureka/
+
+logging:
+  level:
+    root: INFO
+    org.apache.commons.dbcp2: DEBUG
+    store.bookscamp.api: INFO
+    org.springframework.web.reactive.function.client: WARN
+    reactor.netty.http.client: WARN
+
+elasticsearch:
+  index:
+    name: bookscamp-prod
