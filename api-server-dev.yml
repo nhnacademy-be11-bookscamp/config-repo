@@ -10,6 +10,8 @@ spring:
     name: api-server
   profiles:
     active: dev
+  config:
+    import: configserver:http://localhost:10354
 
   elasticsearch:
     uris: http://s4.java21.net:9200
