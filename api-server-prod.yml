@@ -4,8 +4,6 @@ server:
 spring:
   application:
     name: api-server
-  profiles:
-    active: prod
 
   elasticsearch:
     uris: http://s4.java21.net:9200
