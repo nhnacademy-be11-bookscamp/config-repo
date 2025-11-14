@@ -1,47 +1,16 @@
 server:
-  forward-headers-strategy: framework
   port: 8081
+  forward-headers-strategy: framework
   servlet:
     session:
       timeout: 7d
 
 spring:
-  application:
-    name: api-server
-
-  elasticsearch:
-    uris: http://s4.java21.net:9200
-    username: elastic
-    password: nhnacademy123!
-    ssl:
-      verification-mode: none
-
-  servlet:
-    multipart:
-      max-file-size: 5MB
-      max-request-size: 5MB
-
-  session:
-    redis:
-      flush-mode: on_save
-
-  cache:
-    type: redis
-    redis:
-      time-to-live: 600000
-
-  rabbitmq:
-    listener:
-      simple:
-        default-requeue-rejected: false
-        retry:
-          enabled: true
-          max-attempts: 3
-          initial-interval: 1000
-          multiplier: 2.0
-          max-interval: 10000
-
   datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://s4.java21.net:13306/project_be11_team3_dev
+    username: project_be11_team3
+    password: ${PASSWORD}
     type: org.apache.commons.dbcp2.BasicDataSource
     dbcp2:
       initial-size: 5
@@ -57,6 +26,37 @@ spring:
       remove-abandoned-on-borrow: true
       remove-abandoned-timeout: 60
 
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate.globally_quoted_identifiers: true
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+  cache:
+    type: redis
+    redis:
+      time-to-live: 600000
+
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+
+  session:
+    redis:
+      flush-mode: on_save
+
+  rabbitmq:
+    host: s4.java21.net
+    port: 5672
+    username: admin
+    password: nhnacademy123!
+
 eureka:
   instance:
     hostname: localhost
@@ -67,16 +67,50 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://localhost:10351/eureka/
+      defaultZone: http://localhost:8761/eureka/
 
-logging:
-  level:
-    root: INFO
-    org.apache.commons.dbcp2: DEBUG
-    store.bookscamp.api: INFO
-    org.springframework.web.reactive.function.client: WARN
-    reactor.netty.http.client: WARN
+elastic:
+  uri: http://s4.java21.net:9200
+  username: elastic
+  password: nhnacademy123!
+  ssl:
+    verification-mode: none
 
 elasticsearch:
   index:
     name: bookscamp-dev
+
+aladin:
+  base-url: https://www.aladin.co.kr/ttb/api
+  ttb-key: ttbtvsqyfzvpj1722001
+  output: js
+  version: "20131101"
+
+springdoc:
+  api-docs:
+    path: /bookscamp
+    groups:
+      enabled: true
+  swagger-ui:
+    path: /swagger-ui-custom.html
+    enabled: true
+    groups-order: ASC
+    tags-sorter: alpha
+    operations-sorter: alpha
+    display-request-duration: true
+    doc-expansion: none
+  cache:
+    disabled: true
+  model-and-view-allowed: true
+
+google:
+  gemini:
+    api-key: AIzaSyBPqaTSQWhG4sRLVcTfk6v5VvC_Goyjobc
+
+logging:
+  level:
+    root: INFO
+    store.bookscamp.api: DEBUG
+    org.apache.commons.dbcp2: DEBUG
+    org.springframework.web.reactive.function.client: DEBUG
+    reactor.netty.http.client: DEBUG
