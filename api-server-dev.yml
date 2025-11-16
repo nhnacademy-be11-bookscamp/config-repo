@@ -1,17 +1,61 @@
 server:
-  port: 8081
   forward-headers-strategy: framework
+  port: 8081
   servlet:
     session:
       timeout: 7d
 
+eureka:
+  instance:
+    hostname: localhost
+    prefer-ip-address: true
+    ip-address: 127.0.0.1
+    instance-id: ${spring.application.name}:${server.port}
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
 spring:
+  application:
+    name: api-server
+
+  profiles:
+    # Config Client에서 profile=dev로 호출할 거라 여기 active는 굳이 안 써도 되지만,
+    # 쓰고 싶으면 주석 풀어서 사용
+    # active: dev
+    group:
+      dev: dev
+
+  elasticsearch:
+    uris: http://s4.java21.net:9200
+    username: elastic
+    password: nhnacademy123!
+    ssl:
+      verification-mode: none
+
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+
+  session:
+    redis:
+      flush-mode: on_save
+
+  cache:
+    type: redis
+    redis:
+      time-to-live: 600000
+
   datasource:
+    type: org.apache.commons.dbcp2.BasicDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://s4.java21.net:13306/project_be11_team3_dev
     username: project_be11_team3
     password: ${PASSWORD}
-    type: org.apache.commons.dbcp2.BasicDataSource
+
     dbcp2:
       initial-size: 5
       max-total: 30
@@ -30,55 +74,32 @@ spring:
     hibernate:
       ddl-auto: update
     properties:
-      hibernate.globally_quoted_identifiers: true
+      hibernate:
+        globally_quoted_identifiers: true
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: 1234
+
+    listener:
+      simple:
+        auto-startup: false            # ★ dev에서는 리스너 안 띄움
+        default-requeue-rejected: false
+        retry:
+          enabled: true
+          max-attempts: 3
+          initial-interval: 1000
+          multiplier: 2.0
+          max-interval: 10000
+      direct:
+        auto-startup: false
 
   data:
     redis:
       host: localhost
       port: 6379
-
-  cache:
-    type: redis
-    redis:
-      time-to-live: 600000
-
-  servlet:
-    multipart:
-      max-file-size: 5MB
-      max-request-size: 5MB
-
-  session:
-    redis:
-      flush-mode: on_save
-
-  rabbitmq:
-    host: s4.java21.net
-    port: 5672
-    username: admin
-    password: nhnacademy123!
-
-eureka:
-  instance:
-    hostname: localhost
-    prefer-ip-address: true
-    ip-address: 127.0.0.1
-    instance-id: ${spring.application.name}:${server.port}
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
-
-elastic:
-  uri: http://s4.java21.net:9200
-  username: elastic
-  password: nhnacademy123!
-  ssl:
-    verification-mode: none
-
-elasticsearch:
-  index:
-    name: bookscamp-dev
 
 aladin:
   base-url: https://www.aladin.co.kr/ttb/api
@@ -110,7 +131,11 @@ google:
 logging:
   level:
     root: INFO
-    store.bookscamp.api: DEBUG
     org.apache.commons.dbcp2: DEBUG
+    store.bookscamp.api: DEBUG
     org.springframework.web.reactive.function.client: DEBUG
     reactor.netty.http.client: DEBUG
+
+elasticsearch:
+  index:
+    name: bookscamp-dev
