@@ -1,3 +1,7 @@
+# =========================
+# api-server-dev.yml (Config Repo)
+# =========================
+
 server:
   forward-headers-strategy: framework
   port: 8081
@@ -22,12 +26,9 @@ spring:
     name: api-server
 
   profiles:
-    # Config Client에서 profile=dev로 호출할 거라 여기 active는 굳이 안 써도 되지만,
-    # 쓰고 싶으면 주석 풀어서 사용
-    # active: dev
-    group:
-      dev: dev
+    active: dev
 
+  # ===== ElasticSearch (클러스터 공통 설정) =====
   elasticsearch:
     uris: http://s4.java21.net:9200
     username: elastic
@@ -35,11 +36,13 @@ spring:
     ssl:
       verification-mode: none
 
+  # ===== 파일 업로드 설정 =====
   servlet:
     multipart:
       max-file-size: 5MB
       max-request-size: 5MB
 
+  # ===== 세션 / 캐시 Redis 설정 =====
   session:
     redis:
       flush-mode: on_save
@@ -49,13 +52,31 @@ spring:
     redis:
       time-to-live: 600000
 
+  # ===== RabbitMQ 공통 리스너 설정 + dev용 로컬 브로커 연결 =====
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: 1234
+    listener:
+      simple:
+        default-requeue-rejected: false  # 예외 시 DLQ로
+
+        retry:
+          enabled: true
+          max-attempts: 3
+          initial-interval: 1000
+          multiplier: 2.0
+          max-interval: 10000
+
+  # ===== DataSource + DBCP2 풀 설정 (dev DB) =====
   datasource:
-    type: org.apache.commons.dbcp2.BasicDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://s4.java21.net:13306/project_be11_team3_dev
     username: project_be11_team3
     password: ${PASSWORD}
 
+    type: org.apache.commons.dbcp2.BasicDataSource
     dbcp2:
       initial-size: 5
       max-total: 30
@@ -70,43 +91,27 @@ spring:
       remove-abandoned-on-borrow: true
       remove-abandoned-timeout: 60
 
+  # ===== JPA 설정 =====
   jpa:
     hibernate:
       ddl-auto: update
     properties:
-      hibernate:
-        globally_quoted_identifiers: true
+      hibernate.globally_quoted_identifiers: true
 
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: admin
-    password: 1234
-
-    listener:
-      simple:
-        auto-startup: false            # ★ dev에서는 리스너 안 띄움
-        default-requeue-rejected: false
-        retry:
-          enabled: true
-          max-attempts: 3
-          initial-interval: 1000
-          multiplier: 2.0
-          max-interval: 10000
-      direct:
-        auto-startup: false
-
+  # ===== Spring Data Redis (캐시/세션에서 사용하는 Redis 서버 위치) =====
   data:
     redis:
       host: localhost
       port: 6379
 
+# ===== 알라딘 API 설정 =====
 aladin:
   base-url: https://www.aladin.co.kr/ttb/api
   ttb-key: ttbtvsqyfzvpj1722001
   output: js
   version: "20131101"
 
+# ===== springdoc / swagger 설정 =====
 springdoc:
   api-docs:
     path: /bookscamp
@@ -124,10 +129,13 @@ springdoc:
     disabled: true
   model-and-view-allowed: true
 
+# ===== Google Gemini 설정 =====
 google:
   gemini:
+    ##api-key : AIzaSyCuInq-Nb07tuFDZeK4yLNkTdyZIgsM5Q8  # 한정키(주석 유지)
     api-key: AIzaSyBPqaTSQWhG4sRLVcTfk6v5VvC_Goyjobc
 
+# ===== 로그 레벨 설정 (dev) =====
 logging:
   level:
     root: INFO
@@ -136,6 +144,7 @@ logging:
     org.springframework.web.reactive.function.client: DEBUG
     reactor.netty.http.client: DEBUG
 
+# ===== Elasticsearch 인덱스 이름(dev) =====
 elasticsearch:
   index:
     name: bookscamp-dev
