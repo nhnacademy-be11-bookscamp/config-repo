@@ -1,10 +1,23 @@
+# =========================
+# api-server-prod.yml (Config Repo)
+# =========================
+
 server:
   forward-headers-strategy: framework
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:10351/eureka/
 
 spring:
   application:
     name: api-server
 
+  profiles:
+    active: prod
+
+  # ===== ElasticSearch (공통) =====
   elasticsearch:
     uris: http://s4.java21.net:9200
     username: elastic
@@ -12,11 +25,13 @@ spring:
     ssl:
       verification-mode: none
 
+  # ===== 파일 업로드 설정 =====
   servlet:
     multipart:
       max-file-size: 5MB
       max-request-size: 5MB
 
+  # ===== 세션 / 캐시 Redis 설정 (공통 옵션) =====
   session:
     redis:
       flush-mode: on_save
@@ -26,11 +41,13 @@ spring:
     redis:
       time-to-live: 600000
 
+  # ===== DataSource + DBCP2 풀 설정 (prod DB) =====
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://s4.java21.net:13306/project_be11_team3
     username: project_be11_team3
     password: ${PASSWORD}
+
     type: org.apache.commons.dbcp2.BasicDataSource
     dbcp2:
       initial-size: 5
@@ -46,13 +63,14 @@ spring:
       remove-abandoned-on-borrow: true
       remove-abandoned-timeout: 60
 
+  # ===== JPA 설정 =====
   jpa:
     hibernate:
       ddl-auto: update
     properties:
-      hibernate:
-        globally_quoted_identifiers: true
+      hibernate.globally_quoted_identifiers: true
 
+  # ===== Spring Data Redis (prod) =====
   data:
     redis:
       host: s4.java21.net
@@ -60,6 +78,7 @@ spring:
       password: ${REDIS_PASSWORD}
       database: 331
 
+  # ===== RabbitMQ (prod 브로커 + 공통 리스너 설정) =====
   rabbitmq:
     host: s4.java21.net
     port: 5672
@@ -67,7 +86,8 @@ spring:
     password: ${RABBITMQ_PASSWORD}
     listener:
       simple:
-        default-requeue-rejected: false
+        default-requeue-rejected: false  # 예외 시 DLQ로
+
         retry:
           enabled: true
           max-attempts: 3
@@ -75,24 +95,14 @@ spring:
           multiplier: 2.0
           max-interval: 10000
 
-eureka:
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    service-url:
-      defaultZone: http://localhost:10351/eureka/
-  instance:
-    hostname: localhost
-    prefer-ip-address: true
-    ip-address: 127.0.0.1
-    instance-id: ${spring.application.name}:${server.port}
-
+# ===== 알라딘 API 설정 =====
 aladin:
   base-url: https://www.aladin.co.kr/ttb/api
   ttb-key: ttbtvsqyfzvpj1722001
   output: js
   version: "20131101"
 
+# ===== springdoc / swagger 설정 =====
 springdoc:
   api-docs:
     path: /bookscamp
@@ -110,10 +120,13 @@ springdoc:
     disabled: true
   model-and-view-allowed: true
 
+# ===== Google Gemini 설정 =====
 google:
   gemini:
+    ##api-key : AIzaSyCuInq-Nb07tuFDZeK4yLNkTdyZIgsM5Q8  # 한정키(주석 유지)
     api-key: AIzaSyBPqaTSQWhG4sRLVcTfk6v5VvC_Goyjobc
 
+# ===== 로그 레벨 설정 (prod) =====
 logging:
   level:
     root: INFO
@@ -122,6 +135,7 @@ logging:
     org.springframework.web.reactive.function.client: WARN
     reactor.netty.http.client: WARN
 
+# ===== Elasticsearch 인덱스 이름(prod) =====
 elasticsearch:
   index:
     name: bookscamp-prod
