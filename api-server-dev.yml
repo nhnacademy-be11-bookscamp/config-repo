@@ -140,6 +140,8 @@ logging:
     store.bookscamp.api: DEBUG
     org.springframework.web.reactive.function.client: DEBUG
     reactor.netty.http.client: DEBUG
+    org.springframework.amqp: DEBUG
+    org.springframework.amqp.rabbit.connection: DEBUG
 
 # ===== Elasticsearch 인덱스 이름(dev) =====
 elasticsearch:
