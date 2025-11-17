@@ -6,9 +6,6 @@ spring:
   application:
     name: front
 
-  profiles:
-    active: dev
-
   servlet:
     multipart:
       max-file-size: 20MB
@@ -80,4 +77,5 @@ feign:
         connectTimeout: 3000
         readTimeout: 5000
         loggerLevel: BASIC
+
 
