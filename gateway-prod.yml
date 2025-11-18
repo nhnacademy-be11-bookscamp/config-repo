@@ -66,9 +66,6 @@ spring:
               filters:
                 - StripPrefix=2
 
-server:
-  port: 8080  # 필요하면 여기서만 prod용 포트로 변경
-
 eureka:
   instance:
     hostname: localhost
@@ -80,3 +77,4 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://localhost:10351/eureka/
+
