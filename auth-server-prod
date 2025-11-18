@@ -1,0 +1,42 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: auth-server
+
+  session:
+    redis:
+      flush-mode: on_save
+
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+
+  jwt:
+    secret: "저는개인적으로에스파의윈터가짱이라고생각합니다반박시그대말이다맞음"
+
+  datasource:
+    url: jdbc:mysql://s4.java21.net:13306/project_be11_team3
+    username: project_be11_team3
+    password: ${PASSWORD}
+
+  data:
+    redis:
+      host: s4.java21.net
+      port: 6379
+      password: ${REDIS_PASSWORD}
+      database: 331
+
+eureka:
+  instance:
+    hostname: localhost
+    prefer-ip-address: true
+    ip-address: 127.0.0.1
+    instance-id: ${spring.application.name}:${server.port}
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:10351/eureka/
