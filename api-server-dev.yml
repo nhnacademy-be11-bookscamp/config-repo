@@ -149,9 +149,10 @@ elasticsearch:
   index:
     name: bookscamp-dev
 
+# ===== config-server와의 통신 주기 =====
 config:
   watch:
-    initialDelay: 10000
-    delay: 10000
-    enabled: true
+    initialDelay: 10000 # 스케줄 시작까지 시간
+    delay: 15000 # 리로드 주기
+    enabled: true # true일 경우 자동 로드
 
