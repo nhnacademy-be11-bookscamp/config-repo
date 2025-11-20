@@ -1,7 +1,7 @@
 # =========================
 # api-server-dev.yml (Config Repo)
 # =========================
-# ============== 테스트
+
 server:
   forward-headers-strategy: framework
   port: 8081
