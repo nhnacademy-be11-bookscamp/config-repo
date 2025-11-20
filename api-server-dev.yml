@@ -148,3 +148,10 @@ logging:
 elasticsearch:
   index:
     name: bookscamp-dev
+
+config:
+  watch:
+    initialDelay: 100000
+    delay: 10000
+    enabled: true
+
