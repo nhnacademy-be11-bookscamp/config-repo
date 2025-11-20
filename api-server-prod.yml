@@ -136,3 +136,10 @@ logging:
 elasticsearch:
   index:
     name: bookscamp-prod
+
+
+config:
+  watch:
+    initialDelay: 10000
+    delay: 10000
+    enabled: true # true 일 때 yml 자동 불러오기
