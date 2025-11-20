@@ -1,7 +1,7 @@
 # =========================
 # front-dev.yml (Config Repo)
 # =========================
-
+# 11
 spring:
   application:
     name: front
@@ -103,5 +103,6 @@ feign:
         connectTimeout: 3000
         readTimeout: 5000
         loggerLevel: BASIC
+
 
 
