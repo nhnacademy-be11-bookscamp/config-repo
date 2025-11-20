@@ -152,6 +152,6 @@ elasticsearch:
 config:
   watch:
     initialDelay: 100000
-    delay: 10000
+    delay: 5000
     enabled: true
 
