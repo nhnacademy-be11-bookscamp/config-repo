@@ -120,8 +120,8 @@ springdoc:
 # ===== Google Gemini 설정 =====
 google:
   gemini:
-    api-key: AIzaSyCuInq-Nb07tuFDZeK4yLNkTdyZIgsM5Q8  # 한정키
-##  api-key: AIzaSyBPqaTSQWhG4sRLVcTfk6v5VvC_Goyjobc  # 성준키(주석 유지)
+    api-key: ${GEMINI_KEY}
+
 
 # ===== 로그 레벨 설정 (prod) =====
 logging:
