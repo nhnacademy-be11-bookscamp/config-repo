@@ -158,5 +158,5 @@ config:
 
 payment:
   toss:
-    secret-key: test_sk_vZnjEJeQVxbx1ZgE10eY8PmOoBN0
+    secret-key: ${TOSS_SECRETKEY}
     api-url: https://api.tosspayments.com
