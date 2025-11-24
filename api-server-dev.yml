@@ -156,3 +156,7 @@ config:
     delay: 15000 # 리로드 주기
     enabled: true # true일 경우 자동 로드
 
+payment:
+  toss:
+    secret-key: test_sk_vZnjEJeQVxbx1ZgE10eY8PmOoBN0
+    api-url: https://api.tosspayments.com
