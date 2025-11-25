@@ -109,8 +109,9 @@ feign:
 config:
   watch:
     initialDelay: 10000 # 스케줄 시작까지 시간
-    delay: 15100 # 리로드 주기
+    delay: 900000 # 리로드 주기
     enabled: true # true일 경우 자동 로드
+
 
 
 
