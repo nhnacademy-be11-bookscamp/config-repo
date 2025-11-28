@@ -94,7 +94,12 @@ spring:
     hibernate:
       ddl-auto: update
     properties:
-      hibernate.globally_quoted_identifiers: true
+      hibernate:
+        globally_quoted_identifier: true
+        format_sql: true
+        use_sql_comments: true
+        highlight_sql: true
+        auto_quote_keyword: true
 
   # ===== Spring Data Redis (캐시/세션에서 사용하는 Redis 서버 위치) =====
   data:
