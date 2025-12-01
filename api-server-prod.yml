@@ -131,6 +131,7 @@ logging:
     store.bookscamp.api: INFO
     org.springframework.web.reactive.function.client: WARN
     reactor.netty.http.client: WARN
+    store.bookscamp.api.common.config: DEBUG
 
 # ===== Elasticsearch 인덱스 이름(prod) =====
 elasticsearch:
