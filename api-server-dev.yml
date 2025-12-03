@@ -136,6 +136,7 @@ springdoc:
 google:
   gemini:
     api-key: ${GEMINI_KEY}
+    review-api-key: ${REVIEW_KEY}
 
 # ===== 로그 레벨 설정 (dev) =====
 logging:
